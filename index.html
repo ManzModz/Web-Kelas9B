@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Kelas 9B - SMP Pangeran Jayakarta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom, #f0f9ff, #e0f2fe);
+            /* Motif premium: subtle texture + noise */
+            background-image: 
+                url('https://www.transparenttextures.com/patterns/white-diamond.png'),
+                url('https://www.transparenttextures.com/patterns/noise.png');
+            background-repeat: repeat, repeat;
+            background-size: auto, 300px 300px;
+            color: #1e293b;
+            line-height: 1.6;
+            transition: background 0.5s;
+            min-height: 100vh;
+        }
+        body.dark {
+            background: #0f172a;
+            background-image: 
+                url('https://www.transparenttextures.com/patterns/dark-geometric.png'),
+                url('https://www.transparenttextures.com/patterns/noise.png');
+            color: #e2e8f0;
+        }
+
+        header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            text-align: center;
+            padding: 100px 20px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: url('https://www.transparenttextures.com/patterns/subtle-white-feathers.png') repeat;
+            opacity: 0.1;
+        }
+        header h1 { font-size: 3.8rem; margin-bottom: 12px; text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        header p { font-size: 1.4rem; opacity: 0.95; }
+
+        nav {
+            position: sticky; top: 0; background: rgba(30, 58, 138, 0.98);
+            backdrop-filter: blur(15px); padding: 18px 0; z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        nav a:hover { color: #93c5fd; transform: translateY(-2px); }
+
+        .container { max-width: 1400px; margin: 50px auto; padding: 0 20px; }
+
+        .section {
+            margin-bottom: 100px;
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.9s ease-out;
+        }
+        .section.visible { opacity: 1; transform: translateY(0); }
+
+        h2 {
+            text-align: center;
+            color: #1e40af;
+            margin-bottom: 50px;
+            font-size: 2.6rem;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            width: 120px;
+            height: 6px;
+            background: linear-gradient(90deg, #3b82f6, #60a5fa);
+            display: block;
+            margin: 15px auto 0;
+            border-radius: 3px;
+        }
+
+        .profile-grid, .student-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 35px;
+        }
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+            transition: all 0.4s ease;
+            text-align: center;
+        }
+        .card:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(0,0,0,0.18); }
+        .card img {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 7px solid #dbeafe;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            margin-bottom: 15px;
+        }
+
+        /* Galeri Pinterest Style (Masonry) */
+        .gallery-masonry {
+            column-count: 4;
+            column-gap: 25px;
+            padding: 10px;
+        }
+        .gallery-item {
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 25px;
+            break-inside: avoid;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        .gallery-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        @media (max-width: 1200px) { .gallery-masonry { column-count: 3; } }
+        @media (max-width: 900px) { .gallery-masonry { column-count: 2; } }
+        @media (max-width: 600px) { .gallery-masonry { column-count: 1; } }
+
+        .countdown {
+            text-align: center;
+            font-size: 1.8rem;
+            padding: 50px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(30,58,138,0.3);
+        }
+        .countdown div { display: inline-block; margin: 0 25px; font-weight: 600; font-size: 2.2rem; }
+
+        #searchSiswa {
+            width: 100%;
+            padding: 18px;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        form {
+            max-width: 700px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px;
+            border-radius: 28px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 12px;
+            border: 1px solid #cbd5e1;
+        }
+        button {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            border: none;
+            transition: 0.3s;
+        }
+        button:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(30,58,138,0.3); }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 16px;
+            box-shadow: 0 0 50px rgba(255,255,255,0.2);
+        }
+        .close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+        }
+
+        #toggleDark {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color: white;
+            padding: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 1.6rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+        }
+
+        #form-message { margin-top: 15px; text-align: center; font-weight: 500; }
+
+        footer {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            color:  white;
+            text-align: center;
+            padding: 50px 20px;
+            margin-top: 80px;
+            box-shadow: 0 -10px 40px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 3rem; }
+            .countdown div { font-size: 1.8rem; margin: 0 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#struktur">Struktur</a></li>
+            <li><a href="#visi">Visi Misi</a></li>
+            <li><a href="#prestasi">Prestasi</a></li>
+            <li><a href="#countdown">Countdown</a></li>
+            <li><a href="#galeri">Galeri</a></li>
+            <li><a href="#siswa">Daftar Siswa</a></li>
+            <li><a href="#tambah">Tambah Siswa</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <h1>Website Kelas 9B</h1>
+        <p>SMP Pangeran Jayakarta • Bekasi, Jawa Barat</p>
+        <p>Tahun Ajaran 2025/2026 • Solid, Kompak, Berprestasi!</p>
+    </header>
+
+    <div class="container">
+
+        <div class="section" id="struktur">
+            <h2>Struktur Kepengurusan Kelas</h2>
+            <div class="profile-grid">
+                <div class="card">
+                    <img src="https://via.placeholder.com/160?text=Mis+Kayye" alt="Mis Kayye">
+                    <h3>Mis Kayye</h3>
+                    <p><strong>Wali Kelas 9B</strong></p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/160?text=Muhammad" alt="Muhammad">
+                    <h3>Muhammad</h3>
+                    <p><strong>Ketua Kelas</strong></p>
+                </div>
+                <div class="card">
+                    <img src="https://via.placeholder.com/160?text=Andi" alt="Andi">
+                    <h3>Andi</h3>
+                    <p><strong>Wakil Ketua Kelas</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section" id="visi">
+            <h2>Visi & Misi Kelas 9B</h2>
+            <div class="card">
+                <p><strong>Visi:</strong> Menjadi kelas yang unggul dalam prestasi akademik dan non-akademik, berakhlak mulia, serta siap menghadapi masa depan.</p>
+                <p style="margin-top:15px;"><strong>Misi:</strong><br>1. Meningkatkan disiplin dan semangat belajar<br>2. Mengembangkan bakat melalui ekstrakurikuler<br>3. Menjaga kebersamaan dan saling menghormati</p>
+            </div>
+        </div>
+
+        <div class="section" id="prestasi">
+            <h2>Prestasi Kelas Kami</h2>
+            <div class="card">
+                <ul style="text-align:left; max-width:600px; margin:20px auto; list-style:none; font-size:1.1rem;">
+                    <li style="margin:15px 0;">✓ Juara 1 Lomba Kebersihan Tingkat Sekolah 2025</li>
+                    <li style="margin:15px 0;">✓ Juara 2 Sepak Bola Antar Kelas</li>
+                    <li style="margin:15px 0;">✓ 5 Siswa Masuk 10 Besar Nilai Tertinggi Semester Lalu</li>
+                    <li style="margin:15px 0;">✓ Juara Harapan Voli Putri Tingkat Kecamatan</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="section" id="countdown">
+            <h2>Countdown Menuju Kelulusan</h2>
+            <div class="countdown" id="countdown">
+                <div><span id="days">00</span><br>Hari</div>
+                <div><span id="hours">00</span><br>Jam</div>
+                <div><span id="minutes">00</span><br>Menit</div>
+                <div><span id="seconds">00</span><br>Detik</div>
+            </div>
+        </div>
+
+        <div class="section" id="galeri">
+            <h2>Galeri Kegiatan Kelas</h2>
+            <div class="gallery-masonry">
+                <div class="gallery-item"><img src="https://static.republika.co.id/uploads/images/headline/_140211083941-001.jpg" alt="Belajar di kelas" onclick="openLightbox(this.src)"></div>
+                <div class="gallery-item"><img src="https://akademik.ums.ac.id/wp-content/uploads/2023/10/12.jpg" alt="Diskusi kelompok" onclick="openLightbox(this.src)"></div>
+                <div class="gallery-item"><img src="https://pict.sindonews.net/dyn/850/pena/news/2022/07/25/15/834567/porprov-jabar-xiv-2022-kota-bekasi-sabet-juara-umum-cabor-sepak-bola-fzt.jpg" alt="Sepak bola" onclick="openLightbox(this.src)"></div>
+                <div class="gallery-item"><img src="https://asset.kompas.com/crops/4y4oV2s1oY3aK7o2s5D4oW5uI9M=/0x0:0x0/750x500/data/photo/2023/08/14/64da3b0f1b0e6.jpg" alt="Bermain basket" onclick="openLightbox(this.src)"></div>
+                <div class="gallery-item"><img src="https://cdn-2.tstatic.net/palembang/foto/bank/images/tim-voli-smpn-1-indralaya-utara.jpg" alt="Bermain voli" onclick="openLightbox(this.src)"></div>
+                <!-- Tambah foto lain dengan copy-paste div ini -->
+            </div>
+        </div>
+
+        <div class="section" id="siswa">
+            <h2>Daftar Siswa Kelas 9B (32 Siswa)</h2>
+            <input type="text" id="searchSiswa" placeholder="Cari nama siswa..." onkeyup="searchSiswa()">
+            <div class="student-grid" id="studentList">
+                <div class="card student-card"><img src="https://via.placeholder.com/160?text=Ahmad" alt="Ahmad"><p>Ahmad</p></div>
+                <div class="card student-card"><img src="https://via.placeholder.com/160?text=Siti" alt="Siti"><p>Siti</p></div>
+                <div class="card student-card"><img src="https://via.placeholder.com/160?text=Budi" alt="Budi"><p>Budi</p></div>
+                <div class="card student-card"><img src="https://via.placeholder.com/160?text=Rina" alt="Rina"><p>Rina</p></div>
+                <!-- Tambah siswa asli di sini -->
+            </div>
+        </div>
+
+        <div class="section" id="tambah">
+            <h2>Tambah Siswa Baru</h2>
+            <form id="addStudentForm">
+                <input type="text" id="nama" placeholder="Nama Lengkap" required>
+                <input type="text" id="nis" placeholder="NIS / Nomor Absen" required>
+                <input type="email" id="email" placeholder="Email Orang Tua" required>
+                <textarea id="keterangan" placeholder="Keterangan (opsional)"></textarea>
+                <button type="submit">Kirim Data</button>
+                <div id="form-message"></div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <span class="close" onclick="closeLightbox()">&times;</span>
+        <img id="lightbox-img" src="" alt="">
+    </div>
+
+    <div id="toggleDark" title="Toggle Dark Mode" onclick="toggleDark()">🌙</div>
+
+    <footer>
+        <p>© 2026 Kelas 9B - SMP Pangeran Jayakarta, Bekasi | Dibuat dengan ❤️ oleh By menggunakan Acode</p>
+    </footer>
+
+    <script>
+        // Animasi scroll
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        sections.forEach(sec => observer.observe(sec));
+
+        // Lightbox
+        function openLightbox(src) {
+            document.getElementById('lightbox-img').src = src;
+            document.getElementById('lightbox').style.display = 'flex';
+        }
+        function closeLightbox() {
+            document.getElementById('lightbox').style.display = 'none';
+        }
+
+        // Countdown Kelulusan (20 Juni 2026)
+        const countDate = new Date('2026-06-20T00:00:00').getTime();
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = countDate - now;
+            document.getElementById('days').textContent = Math.floor(distance / (1000 * 60 * 60 * 24));
+            document.getElementById('hours').textContent = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            document.getElementById('minutes').textContent = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            document.getElementById('seconds').textContent = Math.floor((distance % (1000 * 60)) / 1000);
+        }, 1000);
+
+        // Search siswa
+        function searchSiswa() {
+            const input = document.getElementById('searchSiswa').value.toLowerCase();
+            const cards = document.querySelectorAll('.student-card');
+            cards.forEach(card => {
+                const name = card.querySelector('p').textContent.toLowerCase();
+                card.parentElement.style.display = name.includes(input) ? '' : 'none';
+            });
+        }
+
+        // Form simulasi
+        document.getElementById('addStudentForm').addEventListener('submit', e => {
+            e.preventDefault();
+            document.getElementById('form-message').innerHTML = '<span style="color:green;">Terima kasih! Data siswa baru telah dikirim (simulasi).</span>';
+            e.target.reset();
+        });
+
+        // Dark mode
+        function toggleDark() {
+            document.body.classList.toggle('dark');
+            document.getElementById('toggleDark').textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+        }
+    </script>
+
+</body>
+</html>
